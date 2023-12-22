@@ -74,7 +74,7 @@ class AdaptationModel(Model):
             self.grid.place_agent(agent=household, node_id=node)
 
         # Then, add the Government agent to the schedule
-        government = Government(unique_id=i+1, model=self)  # unique_id is set to i+1 to ensure it's uniqueness after all Households
+        government = Government(unique_id=number_of_households+1, model=self)  # unique_id is set to i+1 to ensure it's uniqueness after all Households
         self.schedule.add(government)
 
         # Check if Government agent is in the schedule
@@ -173,6 +173,8 @@ class AdaptationModel(Model):
 
         # Collect agent locations and statuses
         for agent in self.schedule.agents:
+            if isinstance(agent, Government): #don't plot Government agent
+                continue
             color = 'blue' if agent.is_adapted else 'red'
             ax.scatter(agent.location.x, agent.location.y, color=color, s=10, label=color.capitalize() if not ax.collections else "")
             ax.annotate(str(agent.unique_id), (agent.location.x, agent.location.y), textcoords="offset points", xytext=(0,1), ha='center', fontsize=9)
