@@ -21,7 +21,7 @@ from functions import map_domain_gdf, floodplain_gdf
 class AdaptationModel(Model):
     """
     The main model running the simulation. It sets up the network of household agents,
-    simulates their behavior, and collects data. The network type can be adjusted based on study requirements.
+    simulates their behavior, and collects data.
     """
 
     def __init__(self, 
@@ -39,7 +39,8 @@ class AdaptationModel(Model):
                  number_of_edges = 3,
                  # number of nearest neighbours for WS social network
                  number_of_nearest_neighbours = 5,
-                 number_of_government = 1
+                 # ### government related parameters ##
+                 # number_of_government = 1,
                  ):
         
         super().__init__(seed = seed)
@@ -47,7 +48,7 @@ class AdaptationModel(Model):
         # defining the variables and setting the values
         self.number_of_households = number_of_households  # Total number of household agents
         self.seed = seed
-        self.number_of_government = number_of_government
+        # self.number_of_government = number_of_government
 
         # network
         self.network = network # Type of network to be created
@@ -72,9 +73,15 @@ class AdaptationModel(Model):
             self.schedule.add(household)
             self.grid.place_agent(agent=household, node_id=node)
 
-        # create Government agent
-        government = Government(1, model=self)
+        # Then, add the Government agent to the schedule
+        government = Government(unique_id=i+1, model=self)  # unique_id is set to i+1 to ensure it's uniqueness after all Households
         self.schedule.add(government)
+
+        # Check if Government agent is in the schedule
+        if any(isinstance(agent, Government) for agent in self.schedule.agents):
+            print("Government agent is in the schedule.")
+        else:
+            print("Government agent is not in the schedule.")
 
         # Data collection setup to collect data
         model_metrics = {
