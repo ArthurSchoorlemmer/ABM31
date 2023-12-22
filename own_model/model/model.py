@@ -86,7 +86,7 @@ class AdaptationModel(Model):
         # Data collection setup to collect data
         model_metrics = {
                         "total_adapted_households": self.total_adapted_households,
-                        'average_appraisal': lambda m: m.average_appraisal,
+                        #'average_appraisal': lambda m: m.average_appraisal,
                         # ... other reporters ...
                         }
         
@@ -98,9 +98,9 @@ class AdaptationModel(Model):
                         "IsAdapted": "is_adapted",
                         "FriendsCount": lambda a: a.count_friends(radius=1),
                         "location":"location",
-                        'total_individual_appraisal': 'total_individual_appraisal',
-                        'threat_appraisal': 'threat_appraisal',
-                        'coping_appraisal': 'coping_appraisal',
+                        #'total_individual_appraisal': 'total_individual_appraisal',
+                        #'threat_appraisal': 'threat_appraisal',
+                        #'coping_appraisal': 'coping_appraisal',
                         # ... other reporters ...
                         }
         #set up the data collector 
