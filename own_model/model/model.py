@@ -175,9 +175,10 @@ class AdaptationModel(Model):
         for agent in self.schedule.agents:
             if isinstance(agent, Government): #don't plot Government agent
                 continue
-            color = 'blue' if agent.is_adapted else 'red'
-            ax.scatter(agent.location.x, agent.location.y, color=color, s=10, label=color.capitalize() if not ax.collections else "")
-            ax.annotate(str(agent.unique_id), (agent.location.x, agent.location.y), textcoords="offset points", xytext=(0,1), ha='center', fontsize=9)
+            elif isinstance(agent, Households):
+                color = 'blue' if agent.is_adapted else 'red'
+                ax.scatter(agent.location.x, agent.location.y, color=color, s=10, label=color.capitalize() if not ax.collections else "")
+                ax.annotate(str(agent.unique_id), (agent.location.x, agent.location.y), textcoords="offset points", xytext=(0,1), ha='center', fontsize=9)
         # Create legend with unique entries
         handles, labels = ax.get_legend_handles_labels()
         by_label = dict(zip(labels, handles))
