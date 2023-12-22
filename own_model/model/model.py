@@ -96,7 +96,7 @@ class AdaptationModel(Model):
                         "FloodDepthActual": "flood_depth_actual",
                         "FloodDamageActual" : "flood_damage_actual",
                         "IsAdapted": "is_adapted",
-                        "FriendsCount": lambda a: a.count_friends(radius=1),
+                        #"FriendsCount": lambda a: a.count_friends(radius=1),
                         "location":"location",
                         #'total_individual_appraisal': 'total_individual_appraisal',
                         #'threat_appraisal': 'threat_appraisal',
@@ -202,10 +202,11 @@ class AdaptationModel(Model):
         """
         if self.schedule.steps == 5:
             for agent in self.schedule.agents:
-                # Calculate the actual flood depth as a random number between 0.5 and 1.2 times the estimated flood depth
-                agent.flood_depth_actual = random.uniform(0.5, 1.2) * agent.flood_depth_estimated
-                # calculate the actual flood damage given the actual flood depth
-                agent.flood_damage_actual = calculate_basic_flood_damage(agent.flood_depth_actual)
+                if isinstance(agent, Households):
+                    # Calculate the actual flood depth as a random number between 0.5 and 1.2 times the estimated flood depth
+                    agent.flood_depth_actual = random.uniform(0.5, 1.2) * agent.flood_depth_estimated
+                    # calculate the actual flood damage given the actual flood depth
+                    agent.flood_damage_actual = calculate_basic_flood_damage(agent.flood_depth_actual)
         
         # Collect data and advance the model by one step
         self.datacollector.collect(self)
