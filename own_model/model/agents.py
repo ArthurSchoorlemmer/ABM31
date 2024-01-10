@@ -64,12 +64,12 @@ class Households(Agent):
         # Protection Motivation Theory: we assume once a threshold of awareness/appraisal is surpassed the households adapt
         # Update total_appraisal
         self.total_individual_appraisal = self.risk_appraisal + self.coping_appraisal
-
+        print(f"Agent {self.unique_id} total individual appraisal: {self.total_individual_appraisal}")
         if self.risk_appraisal >= 0.3 and self.coping_appraisal >= 0.3 and random.random()<(0.2+(self.total_individual_appraisal/2)):
             self.is_adapted = True  # Agent adapts to flooding
 
     
-        
+
 # Define the Government agent class
 class Government(Agent):
     """
