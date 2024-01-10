@@ -88,7 +88,7 @@ class Government(Agent):
         average_appraisal = total_collective_appraisal / household_count*2 if household_count else 0
         mean_flood_damage_estimated = total_flood_damage_estiamted / household_count if household_count else 0
         #print(self.average_appraisal, household_count)
-        appraisal_multiplier = 0.5
+        appraisal_multiplier = 0.1
 
         for agent in self.model.schedule.agents:
             if isinstance(agent, Households):
