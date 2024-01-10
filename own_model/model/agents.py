@@ -110,7 +110,7 @@ class Government(Agent):
                 print("Average appraisal is greater than or equal to 0.2")
                 for agent in self.model.schedule.agents:
                     if isinstance(agent, Households) and (agent.risk_appraisal <= 0.5 or agent.coping_appraisal <= 0.5):
-                        print(f"Agent {agent.unique_id} appraisal addition: {appraisal_multiplier * agent.flood_damage_estimated}"
+                        print(f"Agent {agent.unique_id} appraisal addition: {appraisal_multiplier * agent.flood_damage_estimated}")
                         #print(f"Agent {agent.unique_id} risk appraisal: {agent.risk_appraisal}, coping appraisal: {agent.coping_appraisal}")
                         # if agent.risk_appraisal > 0.5: # PC_C (people centered: individual information on coping), since that household is already risk aware
                         #     agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
