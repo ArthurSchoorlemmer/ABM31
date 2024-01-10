@@ -93,6 +93,7 @@ class Government(Agent):
                 total_flood_damage_estiamted += agent.flood_damage_estimated
 
             self.average_appraisal = total_collective_appraisal / household_count if household_count else 0
+            print(self.average_appraisal; household_count)
             mean_flood_damage_estimated = total_flood_damage_estiamted / household_count if household_count else 0
             
             if self.average_appraisal < 0.2:  # TP_RC (top-down: flyers with risk & coping information)
