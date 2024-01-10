@@ -103,14 +103,15 @@ class Government(Agent):
                 print("Average appraisal is less than 0.2")
                 for agent in self.model.schedule.agents:
                     if isinstance(agent, Households) and agent.total_individual_appraisal <= 0.3: #we assume that flyers only increase appraisal for households with very low awareness
-                        print(f"Agent {agent.unique_id} total individual appsraisal: {agent.total_individual_appraisal}")
+                        print(f"Agent {agent.unique_id} total individual appraisal addition: {appraisal_multiplier * agent.flood_damage_estimated}")
                         agent.risk_appraisal += appraisal_multiplier * agent.flood_damage_estimated #/ mean_flood_damage_estimated #we assume that risk awareness is dependent on actual threat for each household relative to the average threat
                         agent.coping_appraisal += appraisal_multiplier * agent.flood_damage_estimated #/ mean_flood_damage_estimated
             elif self.average_appraisal < 0.5:  # PC (People centered strategy: social media)
                 print("Average appraisal is greater than or equal to 0.2")
                 for agent in self.model.schedule.agents:
                     if isinstance(agent, Households) and (agent.risk_appraisal <= 0.5 or agent.coping_appraisal <= 0.5):
-                        print(f"Agent {agent.unique_id} risk appraisal: {agent.risk_appraisal}, coping appraisal: {agent.coping_appraisal}")
+                        print(f"Agent {agent.unique_id} appraisal addition: {appraisal_multiplier * agent.flood_damage_estimated}"
+                        #print(f"Agent {agent.unique_id} risk appraisal: {agent.risk_appraisal}, coping appraisal: {agent.coping_appraisal}")
                         # if agent.risk_appraisal > 0.5: # PC_C (people centered: individual information on coping), since that household is already risk aware
                         #     agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
                         # elif agent.coping_appraisal > 0.5: # PC_R (people centered: individual information on risk), since that household is already coping aware
