@@ -65,7 +65,7 @@ class Households(Agent):
         # Update total_appraisal
         self.total_individual_appraisal = self.risk_appraisal + self.coping_appraisal
 
-        if self.total_individual_appraisal >= 0.3 and random.random() < 0.6: #+(total_appraisal/2):
+        if self.risk_appraisal >= 0.3 and self.coping_appraisal >= 0.3 and random.random()<(0.2+(self.total_individual_appraisal/2)):
             self.is_adapted = True  # Agent adapts to flooding
 
     
