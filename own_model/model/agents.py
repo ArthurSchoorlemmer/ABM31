@@ -85,6 +85,9 @@ class Government(Agent):
         total_collective_appraisal = 0
         household_count = 0
         total_flood_damage_estiamted = 0
+        average_appraisal = total_collective_appraisal / household_count*2 if household_count else 0
+        mean_flood_damage_estimated = total_flood_damage_estiamted / household_count if household_count else 0
+        #print(self.average_appraisal, household_count)
 
         for agent in self.model.schedule.agents:
             if isinstance(agent, Households):
@@ -92,32 +95,31 @@ class Government(Agent):
                 household_count += 1
                 total_flood_damage_estiamted += agent.flood_damage_estimated
 
-            self.average_appraisal = total_collective_appraisal / household_count if household_count else 0
-            print(self.average_appraisal; household_count)
-            mean_flood_damage_estimated = total_flood_damage_estiamted / household_count if household_count else 0
+
+
             
             if self.average_appraisal < 0.2:  # TP_RC (top-down: flyers with risk & coping information)
                 print("Average appraisal is less than 0.2")
                 for agent in self.model.schedule.agents:
                     if isinstance(agent, Households) and agent.total_individual_appraisal <= 0.3: #we assume that flyers only increase appraisal for households with very low awareness
                         print(f"Agent {agent.unique_id} total individual appraisal: {agent.total_individual_appraisal}")
-                        agent.risk_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
+                        agent.risk_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated #we assume that risk awareness is dependent on actual threat for each household relative to the average threat
                         agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
-            else:  # PC (People centered strategy: social media)
+            elif self.average_appraisal < 0.5:  # PC (People centered strategy: social media)
                 print("Average appraisal is greater than or equal to 0.2")
                 for agent in self.model.schedule.agents:
                     if isinstance(agent, Households) and (agent.risk_appraisal <= 0.5 or agent.coping_appraisal <= 0.5):
                         print(f"Agent {agent.unique_id} risk appraisal: {agent.risk_appraisal}, coping appraisal: {agent.coping_appraisal}")
-                        if agent.risk_appraisal > 0.5: # PC_C (people centered: individual information on coping), since that household is already risk aware
-                            agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
-                        elif agent.coping_appraisal > 0.5: # PC_R (people centered: individual information on risk), since that household is already coping aware
-                            agent.risk_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
-                        elif agent.total_individual_appraisal <= 0.1: #PC_RC
-                            agent.risk_appraisal += 0.05 * agent.flood_damage_estimated / mean_flood_damage_estimated
-                            agent.coping_appraisal += 0.05 * agent.flood_damage_estimated / mean_flood_damage_estimated
-                        elif agent.risk_appraisal > agent.coping_appraisal: # PC_C
+                        # if agent.risk_appraisal > 0.5: # PC_C (people centered: individual information on coping), since that household is already risk aware
+                        #     agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
+                        # elif agent.coping_appraisal > 0.5: # PC_R (people centered: individual information on risk), since that household is already coping aware
+                        #     agent.risk_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
+                        # elif agent.total_individual_appraisal <= 0.1: #PC_RC
+                        #     agent.risk_appraisal += 0.05 * agent.flood_damage_estimated / mean_flood_damage_estimated
+                        #     agent.coping_appraisal += 0.05 * agent.flood_damage_estimated / mean_flood_damage_estimated
+                        if agent.risk_appraisal > agent.coping_appraisal: # PC_C (people centered: individual information on coping), since that household is already risk aware
                             agent.coping_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
                         elif agent.coping_appraisal > agent.risk_appraisal: # PC_R
                             agent.risk_appraisal += 0.1 * agent.flood_damage_estimated / mean_flood_damage_estimated
-                    else:
-                        print('Campainging has stopped.')
+            else:
+                print('Campainging has stopped.')
